@@ -12,6 +12,7 @@ const config = require("config");
 // @access Private
 router.get("/me", auth, async (req, res) => {
   try {
+    console.log("hi");
     const profile = await Profile.findOne({
       user: req.user.id,
     }).populate("user", ["name", "avatar"]);
@@ -75,11 +76,12 @@ router.post(
 
     // Build social object and add to profileFields
     const socialfields = { youtube, twitter, instagram, linkedin, facebook };
-
+    const social = {};
     for (const [key, value] of Object.entries(socialfields)) {
-      if (value !== undefined && value.length > 0) socialfields[key] = value;
+      if (value !== undefined && value.length > 0) social[key] = value;
     }
-    profileFields.social = socialfields;
+    console.log(social, "social");
+    profileFields.social = social;
 
     try {
       // Using upsert option (creates new doc if no match is found):

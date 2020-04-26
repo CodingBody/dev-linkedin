@@ -6,13 +6,13 @@ const User = require("../../models/User");
 const { check, validationResult } = require("express-validator");
 const request = require("request");
 const config = require("config");
+const Post = require("../../models/Posts");
 
 // @route GET api/profile/me
 // @desc get current users profile
 // @access Private
 router.get("/me", auth, async (req, res) => {
   try {
-    console.log("hi");
     const profile = await Profile.findOne({
       user: req.user.id,
     }).populate("user", ["name", "avatar"]);
@@ -116,8 +116,9 @@ module.exports = router;
 // @route    GET api/profile/user/:user_id
 // @desc     get profile by user ID
 // @access   public
-router.get("/user/:user_id", async (req, res) => {
+router.get("/:user_id", async (req, res) => {
   try {
+    console.log("runned! ");
     const profile = await Profile.findOne({
       user: req.params.user_id,
     }).populate("user", ["name", "avatar"]);
@@ -136,13 +137,13 @@ router.get("/user/:user_id", async (req, res) => {
 // @access   Private
 router.delete("/", auth, async (req, res) => {
   try {
-    console.log("runned");
-    // todo - remove users posts
-
-    // remove profile
+    //  remove users posts
+    await Post.deleteMany({ user: req.user.id });
+    // Remove profile
     await Profile.findOneAndRemove({
       user: req.user.id,
     });
+
     //   remove user
     await User.findOneAndRemove({
       _id: req.user.id,

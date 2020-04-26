@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { addEducation } from "./../../actions/profile";
 import { useState } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 const AddEducation = ({ addEducation, history }) => {
   const [formData, setFormData] = React.useState({
@@ -96,7 +97,7 @@ const AddEducation = ({ addEducation, history }) => {
               name="current"
               value=""
             />{" "}
-            Current Job
+            Current School
           </p>
         </div>
         <div className="form-group">
@@ -136,4 +137,4 @@ AddEducation.propTypes = {
   addEducation: PropTypes.func.isRequired,
 };
 
-export default connect(null, { addEducation })(AddEducation);
+export default connect(null, { addEducation })(withRouter(AddEducation));
